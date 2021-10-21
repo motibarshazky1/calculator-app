@@ -7,14 +7,14 @@ import CalculatorPage from '../pages/CalculatorPage';
 import HistoryPage from '../pages/HistoryPage';
 import PrivateRoute from './privateRoute';
 
-const Routes = () => {
-	const { isAuthorized, userData } = useSelector((state) => state.user);
+const Routes = ({ isAuthorized, userData }) => {
 	useEffect(() => {}, [isAuthorized]);
+
 	return (
-		<div>
+		<div style={{ height: '100%' }}>
 			<Switch>
-				<PrivateRoute path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} />
-				<PrivateRoute path="/history" exact component={HistoryPage} isAuthorized={isAuthorized} userData={userData} />
+				<Route path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} />
+				{/* <PrivateRoute path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} /> */}
 				<Route path="/login" component={LoginPage} />
 			</Switch>
 		</div>
