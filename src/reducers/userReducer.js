@@ -1,4 +1,4 @@
-import { USER_SIGNED_IN } from '../types';
+import { USER_SIGNED_IN, USER_SIGNED_OUT } from '../types';
 
 const initialState = {
 	userData: null,
@@ -10,6 +10,8 @@ export default (state = initialState, action) => {
 	switch (type) {
 		case USER_SIGNED_IN:
 			return { ...state, userData: payload, isAuthorized: true };
+		case USER_SIGNED_OUT:
+			return { ...state, userData: null, isAuthorized: false };
 		default:
 			return state;
 	}

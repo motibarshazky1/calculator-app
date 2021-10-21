@@ -3,21 +3,44 @@
 	flex-direction: row;
 	width: 100%;
 	justify-content: space-between;
-	padding: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: lavender;
 }
-.left-side {
+.side {
 	display: flex;
 	flex-direction: row;
 	flex: 1;
+	justify-content: center;
+	align-items: center;
 }
 .navigation-buttons {
-}
-.right-side {
 	display: flex;
 	flex-direction: row;
-	flex: 1;
 }
-.logout-button {
-}
+
 .hello-title {
+	font-weight: bold;
+}
+.button {
+	background-color: lavender;
+	font-size: 17px;
+	padding: 4px 10px;
+	border-radius: 5px;
+	margin: 10px;
+	cursor: pointer;
+	opacity: 0.5;
+	font-family: Montserrat, Roboto, OpenSans;
+}
+.logout {
+	margin: 10px 30px;
+	opacity: 1;
+	background-color: red;
+	color: white;
+}
+.calculator {
+	margin: 10px 30px;
+}
+.active {
+	opacity: 1;
 }
