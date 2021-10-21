@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import './index.css';
-import Button from '../../components/Button';
+import CalcButton from '../../components/CalcButton';
 import CalcInput from '../../components/CalcInput';
 
 import { evaluate } from 'mathjs';
@@ -31,22 +31,22 @@ const CalculatorPage = () => {
 			<CalcInput input={calcInput} />
 			<div className="key-row">
 				{keyboard.slice(0, 4).map((key) => (
-					<Button handleClick={addToInput} value={key} key={key} />
+					<CalcButton handleClick={addToInput} value={key} key={key} />
 				))}
 			</div>
 			<div className="key-row">
 				{keyboard.slice(4, 8).map((key) => (
-					<Button handleClick={addToInput} value={key} key={key} />
+					<CalcButton handleClick={addToInput} value={key} key={key} />
 				))}
 			</div>
 			<div className="key-row">
 				{keyboard.slice(8, 12).map((key) => (
-					<Button handleClick={addToInput} value={key} key={key} />
+					<CalcButton handleClick={addToInput} value={key} key={key} />
 				))}
 			</div>
 			<div className="key-row">
 				{keyboard.slice(12, 16).map((key) => (
-					<Button handleClick={addToInput} value={key} key={key} />
+					<CalcButton handleClick={addToInput} value={key} key={key} />
 				))}
 			</div>
 		</div>
