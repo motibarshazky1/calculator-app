@@ -1,0 +1,6 @@
+.key {
+	border: 1px solid black;
+	flex: 1;
+	text-align: center;
+	cursor: pointer;
+}
