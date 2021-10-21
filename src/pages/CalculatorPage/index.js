@@ -4,27 +4,31 @@ import './index.css';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
-const keyboard = ['7', '8', '9', '/', '4', '5', '6', 'X', '1', '2', '3', '+', 'C', '0', '=', '-'];
+import { evaluate } from 'mathjs';
+
+const keyboard = [7, 8, 9, '/', 4, 5, 6, '*', 1, 2, 3, '+', 'C', 0, '=', '-'];
 
 const CalculatorPage = () => {
-	const [result, setResult] = useState('');
-	const [input, setInput] = useState('');
+	const [calcInput, setCalcInput] = useState('');
 
 	const addToInput = (val) => {
 		if (val === 'C') {
-			setInput('');
+			setCalcInput('');
 		} else if (val === '=') {
 			handleEqual();
 		} else {
-			setInput(input + val);
+			setCalcInput(calcInput + val);
 		}
 	};
 
-	const handleEqual = () => {};
+	const handleEqual = () => {
+		console.log(evaluate(calcInput));
+		setCalcInput(evaluate(calcInput));
+	};
 
 	return (
 		<div className="calc-wrapper">
-			<Input input={input} />
+			<Input input={calcInput} />
 			<div className="key-row">
 				{keyboard.slice(0, 4).map((key) => (
 					<Button handleClick={addToInput} value={key} key={key} />
