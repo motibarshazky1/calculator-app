@@ -11,7 +11,7 @@ const Routes = ({ isAuthorized, userData }) => {
 	useEffect(() => {}, [isAuthorized]);
 
 	return (
-		<div style={{ height: '100%' }}>
+		<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 			<Switch>
 				<Route path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} />
 				{/* <PrivateRoute path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} /> */}

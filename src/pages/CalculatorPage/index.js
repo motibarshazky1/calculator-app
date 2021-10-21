@@ -1,37 +1,49 @@
 import React, { useState } from 'react';
 
-import Key from '../../components/Key';
 import './index.css';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 
-const keyboard = ['1', '2', '3', '+', '4', '5', '6', '-', '7', '8', '9', '*', 'C', '0', '=', '/'];
+const keyboard = ['7', '8', '9', '/', '4', '5', '6', 'X', '1', '2', '3', '+', 'C', '0', '=', '-'];
 
 const CalculatorPage = () => {
 	const [result, setResult] = useState('');
+	const [input, setInput] = useState('');
+
+	const addToInput = (val) => {
+		if (val === 'C') {
+			setInput('');
+		} else if (val === '=') {
+			handleEqual();
+		} else {
+			setInput(input + val);
+		}
+	};
+
+	const handleEqual = () => {};
 
 	return (
 		<div className="calc-wrapper">
-			<div className="calc">
-				<div className="result">{result}</div>
-				<div className="key-row">
-					{keyboard.slice(0, 4).map((key, i) => (
-						<Key key={key} value={key} />
-					))}
-				</div>
-				<div className="key-row">
-					{keyboard.slice(4, 8).map((key, i) => (
-						<Key key={key} value={key} />
-					))}{' '}
-				</div>
-				<div className="key-row">
-					{keyboard.slice(8, 12).map((key, i) => (
-						<Key key={key} value={key} />
-					))}{' '}
-				</div>
-				<div className="key-row">
-					{keyboard.slice(12, 16).map((key, i) => (
-						<Key key={key} value={key} />
-					))}{' '}
-				</div>
+			<Input input={input} />
+			<div className="key-row">
+				{keyboard.slice(0, 4).map((key) => (
+					<Button handleClick={addToInput} value={key} key={key} />
+				))}
+			</div>
+			<div className="key-row">
+				{keyboard.slice(4, 8).map((key) => (
+					<Button handleClick={addToInput} value={key} key={key} />
+				))}
+			</div>
+			<div className="key-row">
+				{keyboard.slice(8, 12).map((key) => (
+					<Button handleClick={addToInput} value={key} key={key} />
+				))}
+			</div>
+			<div className="key-row">
+				{keyboard.slice(12, 16).map((key) => (
+					<Button handleClick={addToInput} value={key} key={key} />
+				))}
 			</div>
 		</div>
 	);
