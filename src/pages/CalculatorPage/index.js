@@ -1,33 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { evaluate } from 'mathjs';
 
-import './index.css';
 import CalcButton from '../../components/CalcButton';
 import CalcInput from '../../components/CalcInput';
+import Modal from '../../components/AppModal';
+import { addUserClick } from '../../actions/userActions';
+import { isOperator } from '../../utils';
 
-import { evaluate } from 'mathjs';
+import './index.css';
 
 const keyboard = [7, 8, 9, '/', 4, 5, 6, '*', 1, 2, 3, '+', 'C', 0, '=', '-'];
 
 const CalculatorPage = () => {
-	const [calcInput, setCalcInput] = useState('');
+	const dispatch = useDispatch();
+	const { userCalcInput } = useSelector((state) => state.user);
+	const [calcInput, setCalcInput] = useState(userCalcInput);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [error, setError] = useState('');
+
+	useEffect(() => {
+		if (calcInput === Infinity || undefined) {
+			setError('Your Formula Is Illegal');
+			setIsModalOpen(true);
+			setCalcInput('');
+		}
+	}, [calcInput]);
 
 	const addToInput = (val) => {
+		let newInput = calcInput || '';
 		if (val === 'C') {
-			setCalcInput('');
+			newInput = '';
 		} else if (val === '=') {
-			handleEqual();
+			newInput = handleEqual();
+		} else if (calcInput && !isOperator(val) && !isOperator(calcInput.toString().charAt(calcInput.length - 1))) {
+			// 2 straight operators - ignore the click
+			return;
+		} else if (!isOperator(val) && val !== '=') {
+			newInput = calcInput + val;
 		} else {
-			setCalcInput(calcInput + val);
+			if (calcInput) {
+				newInput = calcInput.toString() + val.toString();
+			} else {
+				newInput = val.toString();
+			}
 		}
+		setCalcInput(newInput);
+		dispatch(addUserClick(val, newInput));
 	};
 
 	const handleEqual = () => {
-		console.log(evaluate(calcInput));
-		setCalcInput(evaluate(calcInput));
+		if (calcInput && calcInput.length > 1) {
+			if (isOperator(calcInput.charAt(calcInput.length - 1))) {
+				return evaluate(calcInput);
+			}
+		} else {
+			return calcInput;
+		}
+	};
+
+	const onCloseModal = () => {
+		setIsModalOpen(false);
+		setError('');
 	};
 
 	return (
 		<div className="calc-wrapper">
+			{error && isModalOpen && <Modal open={isModalOpen} onClose={onCloseModal} error={error} />}
 			<CalcInput input={calcInput} />
 			<div className="key-row">
 				{keyboard.slice(0, 4).map((key) => (

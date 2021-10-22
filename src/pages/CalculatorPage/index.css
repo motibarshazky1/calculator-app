@@ -13,3 +13,13 @@
 	width: 100%;
 	justify-content: space-between;
 }
+@media only screen and (max-width: 1060px) {
+	.calc-wrapper {
+		width: 40%;
+	}
+}
+@media only screen and (max-width: 720px) {
+	.calc-wrapper {
+		width: 60%;
+	}
+}

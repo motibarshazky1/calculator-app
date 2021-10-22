@@ -11,7 +11,7 @@ const Header = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 
-	const { userData } = useSelector((state) => state.user);
+	const { userData, userClicks } = useSelector((state) => state.user);
 	const [selectedHeader, setSelectedHeader] = useState('');
 
 	useEffect(() => {
@@ -43,20 +43,18 @@ const Header = () => {
 	return (
 		<div className="header-wrapper">
 			<div className="side">
-				<div className="navigation-buttons">
-					<button
-						className={`button calculator ${selectedHeader === 'calculator' ? 'active' : ''}`}
-						onClick={() => onClickNavigate('calculator')}
-					>
-						Calculator
-					</button>
-					<button
-						className={`button history ${selectedHeader === 'history' ? 'active' : ''}`}
-						onClick={() => onClickNavigate('history')}
-					>
-						History
-					</button>
-				</div>
+				<button
+					className={`button calculator ${selectedHeader === 'calculator' ? 'active' : ''}`}
+					onClick={() => onClickNavigate('calculator')}
+				>
+					Calculator
+				</button>
+				<button
+					className={`button history ${selectedHeader === 'history' ? 'active' : ''}`}
+					onClick={() => onClickNavigate('history')}
+				>
+					History
+				</button>
 			</div>
 			<div className="side">
 				<button className="button logout" onClick={onClickLogout}>

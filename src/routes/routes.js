@@ -13,8 +13,8 @@ const Routes = ({ isAuthorized, userData }) => {
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 			<Switch>
-				<Route path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} />
-				{/* <PrivateRoute path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} /> */}
+				<PrivateRoute path="/" exact component={CalculatorPage} isAuthorized={isAuthorized} userData={userData} />
+				<PrivateRoute path="/history" exact component={HistoryPage} isAuthorized={isAuthorized} userData={userData} />
 				<Route path="/login" component={LoginPage} />
 			</Switch>
 		</div>

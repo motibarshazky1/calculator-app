@@ -1,9 +1,7 @@
 import React from 'react';
 import './index.css';
 
-const isOperator = (val) => {
-	return !isNaN(val) || val === '.' || val === '=';
-};
+import { isOperator } from '../../utils';
 
 const CalcButton = ({ value, handleClick }) => (
 	<div className={`button-wrapper ${isOperator(value) ? null : 'operator'}`} onClick={() => handleClick(value)}>

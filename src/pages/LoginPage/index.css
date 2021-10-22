@@ -5,6 +5,8 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
+	margin-top: 120px;
 }
 
 .login-title {
@@ -80,4 +82,9 @@
 
 .row button:hover {
 	opacity: 0.8;
+}
+@media only screen and (max-width: 580px) {
+	.row {
+		width: 70%;
+	}
 }

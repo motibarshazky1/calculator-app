@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { signIn } from '../../actions/userActions';
 
@@ -8,10 +8,16 @@ import './index.css';
 const LoginPage = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-
+	const { userData, isAuthorized } = useSelector((state) => state.user);
 	const [userName, setUserName] = useState('');
 	const [email, setEmail] = useState('');
 	const [error, setError] = useState('');
+
+	useEffect(() => {
+		if (userData && isAuthorized) {
+			history.push('/');
+		}
+	}, [userData, isAuthorized]);
 
 	useEffect(() => {
 		setTimeout(() => {

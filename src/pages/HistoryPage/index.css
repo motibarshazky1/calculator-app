@@ -1,0 +1,32 @@
+.history-wrapper {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	padding: 0px 70px;
+}
+.history-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	padding: 3px;
+}
+.history-title {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 15px;
+	color: darkblue;
+	margin-top: 15px;
+}
+.click-index {
+	font-weight: bold;
+	color: darkblue;
+	margin-right: 5px;
+}
+.clear-history {
+	display: flex;
+	color: darkblue;
+	font-weight: bold;
+	width: 30%;
+	align-self: center;
+	justify-content: center;
+}
