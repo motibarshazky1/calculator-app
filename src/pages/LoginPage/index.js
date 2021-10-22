@@ -4,18 +4,17 @@ import { useHistory } from 'react-router';
 
 import Modal from '../../components/AppModal';
 import { signIn } from '../../actions/userActions';
-import { onCloseModal } from '../../utils';
 
 import './index.css';
+import { toggleModal } from '../../actions/envActions';
 
 const LoginPage = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const { userData, isAuthorized } = useSelector((state) => state.user);
+	const { error, isModalOpen } = useSelector((state) => state.environment);
 	const [userName, setUserName] = useState('');
 	const [email, setEmail] = useState('');
-	const [error, setError] = useState('');
-	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (userData && isAuthorized) {
@@ -38,6 +37,7 @@ const LoginPage = () => {
 	};
 
 	const onClickLogin = () => {
+		let errorMessage;
 		if (userName && email && validateEmail(email)) {
 			const userToSignIn = { userName, email };
 			const isSignedIn = dispatch(signIn(userToSignIn));
@@ -46,26 +46,28 @@ const LoginPage = () => {
 				localStorage.setItem('email', userToSignIn.email);
 				history.push('/');
 			} else {
-				setError('Error While Trying To Login! Please Try Again');
-				setIsModalOpen(true);
+				errorMessage = 'Error While Trying To Login! Please Try Again';
 			}
 		} else if (!userName) {
-			setError('Please Enter User Name');
-			setIsModalOpen(true);
+			errorMessage = 'Please Enter User Name';
 		} else if (!email) {
-			setError('Please Enter Email');
-			setIsModalOpen(true);
+			errorMessage = 'Please Enter Email';
 		} else if (!validateEmail(email)) {
-			setError('Email Is Not Valid');
-			setIsModalOpen(true);
+			errorMessage = 'Email Is Not Valid';
 		}
+		if (errorMessage) {
+			// error in form - open modal with the error
+			dispatch(toggleModal(errorMessage));
+		}
+	};
+
+	const onCloseModal = () => {
+		dispatch(toggleModal());
 	};
 
 	return (
 		<div className="login-wrapper">
-			{error && isModalOpen && (
-				<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
-			)}
+			{error && isModalOpen && <Modal open={isModalOpen} onClose={onCloseModal} error={error} />}
 			<h2 className="login-title">Login</h2>
 			<div className="form">
 				<div className="row">

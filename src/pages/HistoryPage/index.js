@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { toggleModal } from '../../actions/envActions';
 
 import { clearUserClicksHistory } from '../../actions/userActions';
-import { onCloseModal } from '../../utils';
 import Modal from '../../components/AppModal';
 
 import './index.css';
@@ -10,23 +10,22 @@ import './index.css';
 const HistoryPage = () => {
 	const dispatch = useDispatch();
 	const { userClicks } = useSelector((state) => state.user);
-
-	const [error, setError] = useState('');
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const { error, isModalOpen } = useSelector((state) => state.environment);
 
 	const onClickClearHistory = () => {
 		const isClearSuccessfully = dispatch(clearUserClicksHistory());
 		if (!isClearSuccessfully) {
-			setError('Error While Trying To Clear Clicks History! Please Try Again');
-			setIsModalOpen(true);
+			dispatch(toggleModal('Error While Trying To Clear Clicks History! Please Try Again'));
 		}
+	};
+
+	const onCloseModal = () => {
+		dispatch(toggleModal());
 	};
 
 	return (
 		<div className="history-wrapper">
-			{error && isModalOpen && (
-				<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
-			)}
+			{error && isModalOpen && <Modal open={isModalOpen} onClose={onCloseModal} error={error} />}
 
 			<div className="history-title">Your last 20 clicks:</div>
 			{userClicks && userClicks.length

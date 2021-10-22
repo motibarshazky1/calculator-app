@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Modal from '../../components/AppModal';
 import { signOut } from '../../actions/userActions';
-import { onCloseModal } from '../../utils';
+import { toggleModal } from '../../actions/envActions';
 
 import './index.css';
 
@@ -13,10 +13,10 @@ const Header = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 
-	const { userData, userClicks } = useSelector((state) => state.user);
+	const { userData } = useSelector((state) => state.user);
+	const { error, isModalOpen } = useSelector((state) => state.environment);
+
 	const [selectedHeader, setSelectedHeader] = useState('');
-	const [error, setError] = useState('');
-	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		// get the selected header from url param
@@ -45,15 +45,17 @@ const Header = () => {
 			localStorage.setItem('email', '');
 			history.push('/login');
 		} else {
-			setError('Could Not Sign Out! Please Try Again');
-			setIsModalOpen(true);
+			dispatch(toggleModal('Could Not Sign Out! Please Try Again'));
 		}
 	};
+
+	const onCloseModal = () => {
+		dispatch(toggleModal());
+	};
+
 	return (
 		<div className="header-wrapper">
-			{error && isModalOpen && (
-				<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
-			)}
+			{error && isModalOpen && <Modal open={isModalOpen} onClose={onCloseModal} error={error} />}
 			<div className="side">
 				<button
 					className={`button calculator ${selectedHeader === 'calculator' ? 'active' : ''}`}

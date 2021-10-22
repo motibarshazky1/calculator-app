@@ -6,23 +6,23 @@ import CalcButton from '../../components/CalcButton';
 import CalcInput from '../../components/CalcInput';
 import Modal from '../../components/AppModal';
 import { addUserClick } from '../../actions/userActions';
-import { isOperator, onCloseModal } from '../../utils';
+import { isOperator } from '../../utils';
 
 import './index.css';
+import { toggleModal } from '../../actions/envActions';
 
 const keyboard = [7, 8, 9, '/', 4, 5, 6, '*', 1, 2, 3, '+', 'C', 0, '=', '-'];
 
 const CalculatorPage = () => {
 	const dispatch = useDispatch();
 	const { userCalcInput } = useSelector((state) => state.user);
+	const { error, isModalOpen } = useSelector((state) => state.environment);
+
 	const [calcInput, setCalcInput] = useState(userCalcInput);
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [error, setError] = useState('');
 
 	useEffect(() => {
 		if (calcInput === Infinity || undefined) {
-			setError('Your Formula Is Illegal');
-			setIsModalOpen(true);
+			dispatch(toggleModal('Your Formula Is Illegal'));
 			setCalcInput('');
 		}
 	}, [calcInput]);
@@ -48,8 +48,7 @@ const CalculatorPage = () => {
 		setCalcInput(newInput);
 		const isAddedUserClick = dispatch(addUserClick(val, newInput));
 		if (!isAddedUserClick) {
-			setError('Error While Trying To Add User Click');
-			setIsModalOpen(true);
+			dispatch(toggleModal('Error While Trying To Add User Click'));
 		}
 	};
 
@@ -63,9 +62,13 @@ const CalculatorPage = () => {
 		}
 	};
 
+	const onCloseModal = () => {
+		dispatch(toggleModal());
+	};
+
 	return (
 		<div className="calc-wrapper">
-			<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
+			<Modal open={isModalOpen} onClose={onCloseModal} error={error} />
 			<CalcInput input={calcInput} />
 			<div className="key-row">
 				{keyboard.slice(0, 4).map((key) => (
