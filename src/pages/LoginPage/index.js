@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+
+import Modal from '../../components/AppModal';
 import { signIn } from '../../actions/userActions';
+import { onCloseModal } from '../../utils';
 
 import './index.css';
 
@@ -12,18 +15,13 @@ const LoginPage = () => {
 	const [userName, setUserName] = useState('');
 	const [email, setEmail] = useState('');
 	const [error, setError] = useState('');
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (userData && isAuthorized) {
 			history.push('/');
 		}
 	}, [userData, isAuthorized]);
-
-	useEffect(() => {
-		setTimeout(() => {
-			setError('');
-		}, 3000);
-	}, [error]);
 
 	const onChangeFormInput = (e) => {
 		if (e.target.name === 'username') {
@@ -48,16 +46,26 @@ const LoginPage = () => {
 				localStorage.setItem('email', userToSignIn.email);
 				history.push('/');
 			} else {
-				setError('Error While Trying To Login! Please Try Again.');
+				setError('Error While Trying To Login! Please Try Again');
+				setIsModalOpen(true);
 			}
-		} else {
-			setError('Form Is Not Valid.');
+		} else if (!userName) {
+			setError('Please Enter User Name');
+			setIsModalOpen(true);
+		} else if (!email) {
+			setError('Please Enter Email');
+			setIsModalOpen(true);
+		} else if (!validateEmail(email)) {
+			setError('Email Is Not Valid');
+			setIsModalOpen(true);
 		}
 	};
 
 	return (
 		<div className="login-wrapper">
-			{error && <div>{error}</div>}
+			{error && isModalOpen && (
+				<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
+			)}
 			<h2 className="login-title">Login</h2>
 			<div className="form">
 				<div className="row">

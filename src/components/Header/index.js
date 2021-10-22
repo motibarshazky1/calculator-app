@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
+import Modal from '../../components/AppModal';
 import { signOut } from '../../actions/userActions';
+import { onCloseModal } from '../../utils';
 
 import './index.css';
 
@@ -13,6 +15,8 @@ const Header = () => {
 
 	const { userData, userClicks } = useSelector((state) => state.user);
 	const [selectedHeader, setSelectedHeader] = useState('');
+	const [error, setError] = useState('');
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		// get the selected header from url param
@@ -36,12 +40,20 @@ const Header = () => {
 
 	const onClickLogout = () => {
 		const isLogout = dispatch(signOut());
-		localStorage.setItem('userName', '');
-		localStorage.setItem('email', '');
-		history.push('/login');
+		if (isLogout) {
+			localStorage.setItem('userName', '');
+			localStorage.setItem('email', '');
+			history.push('/login');
+		} else {
+			setError('Could Not Sign Out! Please Try Again');
+			setIsModalOpen(true);
+		}
 	};
 	return (
 		<div className="header-wrapper">
+			{error && isModalOpen && (
+				<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
+			)}
 			<div className="side">
 				<button
 					className={`button calculator ${selectedHeader === 'calculator' ? 'active' : ''}`}

@@ -6,7 +6,7 @@ import CalcButton from '../../components/CalcButton';
 import CalcInput from '../../components/CalcInput';
 import Modal from '../../components/AppModal';
 import { addUserClick } from '../../actions/userActions';
-import { isOperator } from '../../utils';
+import { isOperator, onCloseModal } from '../../utils';
 
 import './index.css';
 
@@ -46,7 +46,11 @@ const CalculatorPage = () => {
 			}
 		}
 		setCalcInput(newInput);
-		dispatch(addUserClick(val, newInput));
+		const isAddedUserClick = dispatch(addUserClick(val, newInput));
+		if (!isAddedUserClick) {
+			setError('Error While Trying To Add User Click');
+			setIsModalOpen(true);
+		}
 	};
 
 	const handleEqual = () => {
@@ -59,14 +63,9 @@ const CalculatorPage = () => {
 		}
 	};
 
-	const onCloseModal = () => {
-		setIsModalOpen(false);
-		setError('');
-	};
-
 	return (
 		<div className="calc-wrapper">
-			{error && isModalOpen && <Modal open={isModalOpen} onClose={onCloseModal} error={error} />}
+			<Modal open={isModalOpen} onClose={() => onCloseModal(setIsModalOpen, setError)} error={error} />
 			<CalcInput input={calcInput} />
 			<div className="key-row">
 				{keyboard.slice(0, 4).map((key) => (
